@@ -1,0 +1,60 @@
+<image class="page-bg" src="/images/bg.jpg" mode="aspectFill"></image>
+
+<view class="detail" wx:if="{{post}}">
+  <!-- 主帖 -->
+  <view class="card">
+    <view class="post-head">
+      <text class="tag {{post.type==='安利'?'tag-good':post.type==='避雷'?'tag-avoid':'tag-help'}}">{{post.type}}</text>
+      <view class="post-title">{{post.title}}</view>
+    </view>
+
+    <view class="post-meta">
+      <text>{{post.author}} · {{post.time}}</text>
+      <text class="post-loc">📍 {{post.province}} · {{post.city}}{{post.district ? ' · ' + post.district : ''}}</text>
+    </view>
+
+    <view class="content">{{post.content}}</view>
+
+    <!-- 点赞 -->
+    <view class="like-row">
+      <view class="like-btn {{post.isLiked ? 'liked' : ''}}" bindtap="toggleLike">
+        <text class="like-icon">{{post.isLiked ? '❤' : '♡'}}</text>
+        <text class="like-num">{{post.likeCount}} 人点赞</text>
+      </view>
+    </view>
+
+    <view class="map-placeholder">🗺️ 地图位置占位 · 下一版接高德</view>
+  </view>
+
+  <!-- 表态 -->
+  <view class="card">
+    <view class="section-head">
+      <view class="section-title">{{post.type==='求助' ? '去过的同学，点选你的态度' : '大家的态度，点选表态'}}</view>
+      <view class="muted">仅限选择以下关键词</view>
+    </view>
+    <view wx:for="{{post.polls}}" wx:key="label" class="poll-row" data-index="{{index}}" bindtap="togglePoll">
+      <view class="poll-label {{item.active?'poll-active':''}}">{{item.label}}</view>
+      <view class="poll-count">{{item.count}}人</view>
+      <view class="poll-bar">
+        <view class="poll-fill" style="width:{{item.percentStr}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 回复 -->
+  <view class="card">
+    <view class="section-title">{{post.comments.length}}条回答</view>
+    <view wx:for="{{post.comments}}" wx:key="text" class="comment">
+      <view class="comment-head">{{item.author}} · {{item.time}}</view>
+      <view class="comment-text">{{item.text}}</view>
+    </view>
+  </view>
+
+  <!-- 底部留言条 -->
+  <view class="reply-bar">
+    <input class="reply-input" placeholder="点选关键词表态，或文明留言" value="{{draft}}" bindinput="onDraft" />
+    <view class="send-btn" bindtap="onSend">➤</view>
+  </view>
+</view>
+
+<view wx:else class="empty">帖子不存在或已被删除</view>
