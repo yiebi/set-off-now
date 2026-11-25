@@ -1,0 +1,68 @@
+<image class="page-bg" src="/images/bg.jpg" mode="aspectFill"></image>
+<view class="home">
+  <!-- 顶部品牌 -->
+  <view class="brand-bar">
+    <view class="brand-left">
+      <view class="brand-name">📍 现在就出发</view>
+      <view class="brand-sub">本校专属 · 仅本校学生可发布 · 真实不接广告</view>
+    </view>
+    <view class="bell">🔔</view>
+  </view>
+
+  <!-- 搜索 -->
+  <view class="search-box">
+    <input class="search-input" placeholder="搜索想去的景点、城市或家乡" value="{{keyword}}" bindinput="onKeyword" />
+    <view class="search-btn" bindtap="applyFilter">搜索</view>
+  </view>
+
+  <!-- 类别筛选 -->
+  <view class="chip-row">
+    <view wx:for="{{types}}" wx:key="*this"
+      class="chip {{activeType===item?'chip-active':''}}"
+      data-t="{{item}}" bindtap="pickType">{{item}}</view>
+  </view>
+
+  <!-- 地区筛选（全国省份，横向滑动） -->
+  <scroll-view class="chip-scroll" scroll-x>
+    <view class="chip-row chip-row-inline">
+      <view wx:for="{{regions}}" wx:key="*this"
+        class="chip {{activeRegion===item?'chip-active':''}}"
+        data-r="{{item}}" bindtap="pickRegion">{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 正在看的范围提示 -->
+  <view class="city-filter" wx:if="{{activeRegion==='我的家乡' && hometownCity}}">
+    <text class="city-filter-label">正在看我的家乡</text>
+    <text class="city-filter-name">{{hometownProvince}} · {{hometownCity}}</text>
+    <text class="city-filter-clear" bindtap="clearCity">✕ 取消</text>
+  </view>
+  <view class="city-filter" wx:elif="{{activeCity}}">
+    <text class="city-filter-label">正在看</text>
+    <text class="city-filter-name">{{activeCityProvince}} · {{activeCity}}</text>
+    <text class="city-filter-clear" bindtap="clearCity">✕ 取消</text>
+  </view>
+
+  <!-- 帖子卡片流 -->
+  <view wx:for="{{list}}" wx:key="_id" class="card post" bindtap="goDetail" data-id="{{item._id}}">
+    <view class="post-head">
+      <text class="tag {{item.type==='安利'?'tag-good':item.type==='避雷'?'tag-avoid':'tag-help'}}">{{item.type}}</text>
+      <text class="post-title">{{item.title}}</text>
+    </view>
+    <view class="post-meta">
+      <text>{{item.author}} · {{item.time}}</text>
+      <text class="post-loc">📍 {{item.province}} · {{item.city}}{{item.type==='求助' ? '（询问）' : ''}}</text>
+    </view>
+    <view class="post-tags">
+      <text wx:for="{{item.tags}}" wx:for-item="tg" wx:key="*this" class="mini-tag">{{tg}}</text>
+    </view>
+    <view class="post-foot">
+      <text class="muted">
+        {{item.type==='避雷' ? (item.avoidCount||0) + '人标记避雷' : (item.type==='求助' ? '等待同学回答' : (item.wantGo||0) + '人想去')}} · {{item.replies||0}}条回复
+      </text>
+      <view class="map-thumb">📍</view>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length===0}}" class="empty">暂时没有符合条件的帖子，换个筛选试试</view>
+</view>

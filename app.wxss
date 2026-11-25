@@ -1,0 +1,93 @@
+page {
+  background-color: #d8efdd;
+  color: #1f2d27;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  min-height: 100vh;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 28rpx;
+  padding: 28rpx;
+  margin: 20rpx 28rpx;
+  box-shadow: 0 6rpx 20rpx rgba(22, 163, 74, 0.08);
+}
+
+.tag {
+  display: inline-block;
+  padding: 6rpx 18rpx;
+  border-radius: 12rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #fff;
+  margin-right: 14rpx;
+}
+.tag-good { background: #16a34a; }
+.tag-avoid { background: #f97316; }
+.tag-help { background: #3b82f6; }
+
+.pill {
+  display: inline-block;
+  padding: 12rpx 28rpx;
+  border-radius: 999rpx;
+  background: #f0f7f2;
+  color: #3f6b52;
+  font-size: 26rpx;
+  margin: 12rpx 16rpx 0 0;
+  border: 2rpx solid transparent;
+}
+.pill-active {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #22c55e;
+  font-weight: 600;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10rpx 28rpx;
+}
+.chip {
+  padding: 12rpx 30rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.8);
+  color: #4a6357;
+  font-size: 26rpx;
+  margin: 10rpx 16rpx 10rpx 0;
+}
+.chip-active {
+  background: #16a34a;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+  color: #fff;
+  border-radius: 999rpx;
+  text-align: center;
+  padding: 26rpx 0;
+  font-size: 32rpx;
+  font-weight: 600;
+  margin: 30rpx 28rpx;
+}
+.btn-disabled {
+  background: #c9d6cf;
+}
+
+.muted { color: #8a9a90; font-size: 24rpx; }
+.title-lg { font-size: 38rpx; font-weight: 700; }
+.divider { height: 2rpx; background: #eef2ef; margin: 20rpx 0; }
+
+/* 全站背景图：WXSS 不支持本地 background-image，统一用 image 组件铺底 */
+.page-bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}

@@ -1,0 +1,106 @@
+<image class="page-bg" src="/images/bg.jpg" mode="aspectFill"></image>
+<view class="mine">
+  <view class="card profile">
+    <view class="avatar">👤</view>
+    <view class="profile-info">
+      <view class="name-row">
+        <text class="nickname">{{user.nickname || '本校同学'}}</text>
+        <text class="bind-tag" wx:if="{{user.studentNo}}">学号已绑定</text>
+      </view>
+      <view class="muted" wx:if="{{user.studentNo}}">学号：{{user.studentNo}}</view>
+      <view class="muted" wx:else>尚未登录 · 回到首页完成学号登录</view>
+    </view>
+  </view>
+
+  <!-- 我的家乡 -->
+  <view class="card hometown-card">
+    <picker mode="multiSelector"
+      range="{{regionRange}}"
+      value="{{regionIndex}}"
+      bindchange="onRegionChange"
+      bindcolumnchange="onRegionColumn">
+      <view class="menu-row">
+        <text class="menu-text">📍 我的家乡</text>
+        <text class="{{user.hometownCity ? 'hometown-set' : 'muted'}}">{{hometownText}} ›</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="card stats">
+    <view class="stat">
+      <view class="stat-num">{{allPosts.length}}</view>
+      <view class="muted">我的发帖</view>
+    </view>
+    <view class="stat-div"></view>
+    <view class="stat">
+      <view class="stat-num">{{commentCount}}</view>
+      <view class="muted">我的评论</view>
+    </view>
+    <view class="stat-div"></view>
+    <view class="stat">
+      <view class="stat-num">{{likedPosts.length}}</view>
+      <view class="muted">点赞</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <!-- 主标签：我的帖子 / 我的评论 / 点赞 -->
+    <view class="main-tabs">
+      <view class="main-tab {{mainTab==='post'?'main-tab-active':''}}" data-val="post" bindtap="pickMain">我的帖子</view>
+      <view class="main-tab {{mainTab==='comment'?'main-tab-active':''}}" data-val="comment" bindtap="pickMain">我的评论</view>
+      <view class="main-tab {{mainTab==='like'?'main-tab-active':''}}" data-val="like" bindtap="pickMain">点赞</view>
+    </view>
+
+    <!-- 我的帖子 -->
+    <block wx:if="{{mainTab==='post'}}">
+      <view class="my-tabs">
+        <view wx:for="{{myTabs}}" wx:key="*this"
+          class="chip {{activeTab===item?'chip-active':''}}"
+          data-t="{{item}}" bindtap="pickTab">{{item}}</view>
+      </view>
+
+      <view wx:if="{{filteredMyPosts.length===0}}" class="empty">你还没有发过帖子，点底部「发布」开始第一条</view>
+
+      <view wx:for="{{filteredMyPosts}}" wx:key="_id" class="my-post" bindtap="goDetail" data-id="{{item._id}}">
+        <text class="tag {{item.type==='安利'?'tag-good':item.type==='避雷'?'tag-avoid':'tag-help'}}">{{item.type}}</text>
+        <view class="my-post-body">
+          <view class="my-post-title">{{item.title}}</view>
+          <view class="muted">{{item.time}} · {{item.replies||0}}条回复</view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 我的评论 -->
+    <block wx:elif="{{mainTab==='comment'}}">
+      <view wx:if="{{myComments.length===0}}" class="empty">还没有发过评论，去帖子里聊两句吧</view>
+
+      <view wx:for="{{myComments}}" wx:key="_id" class="my-post" bindtap="goDetail" data-id="{{item.postId}}">
+        <text class="tag tag-help">评论</text>
+        <view class="my-post-body">
+          <view class="my-post-title">{{item.content}}</view>
+          <view class="muted">{{item.time}} · 原帖：{{item.postTitle}}</view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 点赞列表 -->
+    <block wx:else>
+      <view wx:if="{{likedPosts.length===0}}" class="empty">还没有点赞过帖子，去首页逛逛吧</view>
+
+      <view wx:for="{{likedPosts}}" wx:key="_id" class="my-post" bindtap="goDetail" data-id="{{item._id}}">
+        <text class="tag {{item.type==='安利'?'tag-good':item.type==='避雷'?'tag-avoid':'tag-help'}}">{{item.type}}</text>
+        <view class="my-post-body">
+          <view class="my-post-title">{{item.title}}</view>
+          <view class="muted">{{item.time}} · {{item.replies||0}}条回复</view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="card menu">
+    <view wx:for="{{menus}}" wx:key="*this" class="menu-row" bindtap="onMenu" data-name="{{item}}">
+      <text class="menu-text">{{item}}</text>
+      <text class="arrow">›</text>
+    </view>
+  </view>
+</view>

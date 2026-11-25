@@ -1,0 +1,61 @@
+<image class="page-bg" src="/images/bg.jpg" mode="aspectFill"></image>
+<view class="publish">
+  <!-- 身份选择 -->
+  <view class="role-row">
+    <view class="role-card {{role==='ask'?'role-active':''}}" data-role="ask" bindtap="pickRole">
+      <view class="role-icon">❓</view>
+      <view class="role-name">我是询问者</view>
+      <view class="role-desc">发问求助，问问大家这个地方值不值得去</view>
+    </view>
+    <view class="role-card {{role==='share'?'role-active':''}}" data-role="share" bindtap="pickRole">
+      <view class="role-icon">✏️</view>
+      <view class="role-name">我是发表者</view>
+      <view class="role-desc">分享真实经历，发安利帖或避雷帖</view>
+    </view>
+  </view>
+
+  <!-- 发表者再选类型 -->
+  <view wx:if="{{role==='share'}}" class="card">
+    <view class="section-title">选择帖子类型</view>
+    <view class="pill {{shareType==='安利'?'pill-active':''}}" data-t="安利" bindtap="pickShareType">安利（推荐）</view>
+    <view class="pill {{shareType==='避雷'?'pill-active':''}}" data-t="避雷" bindtap="pickShareType">避雷（劝退）</view>
+  </view>
+
+  <!-- 标题 + 正文 -->
+  <view class="card">
+    <view class="field-label">{{role==='ask' ? '你想去哪里？一句话说清疑问，如：莫干山值得专门去吗' : '一句话标题，如：西湖边人均20的落日咖啡馆'}}</view>
+    <input class="line-input" placeholder="在这里写标题" value="{{title}}" bindinput="onTitle" maxlength="40" />
+    <view class="divider"></view>
+    <textarea class="textarea" placeholder="{{role==='ask' ? '补充你的顾虑：预算、出行时间、怕踩的坑……' : '说说你的真实经历：花费、体验、适合谁、不适合谁……'}}"
+      value="{{content}}" bindinput="onContent" maxlength="300" />
+    <view class="count">{{content.length}}/300</view>
+  </view>
+
+  <!-- 地点：全国省 -> 市，再补具体地点 -->
+  <view class="card">
+    <view class="section-head">
+      <view class="section-title">{{role==='ask' ? '想了解的地点' : '去过的地点'}}</view>
+      <view class="muted">选省 → 选市</view>
+    </view>
+
+    <picker mode="multiSelector" range="{{regionRange}}" value="{{regionIndex}}"
+      bindchange="onRegionChange" bindcolumnchange="onRegionColumn">
+      <view class="region-picker">
+        <text class="region-picker-text">{{provinceText}} · {{cityText}}</text>
+        <text class="region-picker-arrow">›</text>
+      </view>
+    </picker>
+
+    <input class="line-input" placeholder="再补个具体地点，如 西湖区 / 莫干山（可不填）" value="{{place}}" bindinput="onPlace" maxlength="30" />
+  </view>
+
+  <!-- 期待得到哪类回答（询问者） -->
+  <view wx:if="{{role==='ask'}}" class="card">
+    <view class="section-title">期待得到哪类回答（可多选）</view>
+    <view wx:for="{{expects}}" wx:key="label"
+      class="pill {{item.active?'pill-active':''}}"
+      data-index="{{index}}" bindtap="toggleExpect">{{item.label}}</view>
+  </view>
+
+  <view class="btn-primary" bindtap="onPublish">{{role==='ask' ? '发布提问' : '发布帖子'}}</view>
+</view>

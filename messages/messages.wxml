@@ -1,0 +1,19 @@
+<image class="page-bg" src="/images/bg.jpg" mode="aspectFill"></image>
+<view class="messages">
+  <view class="msg-head">消息</view>
+  <view class="chip-row">
+    <view wx:for="{{tabs}}" wx:key="*this"
+      class="chip {{activeTab===item?'chip-active':''}}"
+      data-t="{{item}}" bindtap="pickTab">{{item}}</view>
+  </view>
+  <view wx:for="{{filtered}}" wx:key="id" class="card msg-item" bindtap="openNotice" data-id="{{item.id}}">
+    <view class="msg-icon">{{item.icon}}</view>
+    <view class="msg-body">
+      <view class="msg-title">{{item.title}}</view>
+      <view class="msg-desc">{{item.desc}}</view>
+      <view class="muted msg-time">{{item.time}}</view>
+    </view>
+    <view wx:if="{{item.unread}}" class="dot"></view>
+  </view>
+  <view wx:if="{{filtered.length===0}}" class="empty">这里还没有消息</view>
+</view>
